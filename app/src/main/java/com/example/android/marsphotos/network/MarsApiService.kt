@@ -1,4 +1,5 @@
 package com.example.android.marsphotos.network
+import androidx.lifecycle.LiveData
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -35,7 +36,7 @@ interface MarsApiService {
      * The @GET annotation indicates that the "photos" endpoint will be requested with the GET
      * HTTP method
      */    @GET("realestate")
-    suspend fun getProperty(@Query("filter") type: String): MarsPropertyContainer
+    suspend fun getProperty(@Query("filter") type: String): List<NetworkMarsProperty>
 }
 /**
  * A public Api object that exposes the lazy-initialized Retrofit service

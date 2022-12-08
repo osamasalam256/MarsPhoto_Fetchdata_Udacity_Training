@@ -13,9 +13,10 @@ import kotlinx.coroutines.withContext
 
 class MarsRepository(private val database: MarsDatabase) {
 
-    val marsList: LiveData<List<DomainMars>> = Transformations.map(database.marsDao.getMarsProperties()){
-        it.asDomainModel()
-    }
+    val marsList: LiveData<List<DomainMars>> = Transformations.map(database.marsDao.getMarsProperties()) {
+                it.asDomainModel()
+            }
+
 
 
 
@@ -23,7 +24,14 @@ class MarsRepository(private val database: MarsDatabase) {
     suspend fun refreshMarsProperty(filter: MarsApiFilter){
         withContext(Dispatchers.IO){
             val marsPropertyList = MarsApi.retrofitService.getProperty(filter.value)
-            database.marsDao.insertAll(marsPropertyList.asDataBaseModel())
+            if (filter.value != "all"){
+                database.marsDao.clear()
+                database.marsDao.insertAll(marsPropertyList.asDataBaseModel())
+            }else{
+                database.marsDao.insertAll(marsPropertyList.asDataBaseModel())
+            }
+
+
         }
     }
 }

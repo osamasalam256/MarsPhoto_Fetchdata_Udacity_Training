@@ -31,6 +31,11 @@ import kotlinx.coroutines.launch
 enum class MarsApiStatus { LOADING, ERROR, DONE }
 class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 
+    // The internal MutableLiveData that stores the status of the most recent request
+    private val _status = MutableLiveData<MarsApiStatus>()
+
+    // The external immutable LiveData for the request status
+    val status: LiveData<MarsApiStatus> = _status
 
     private val _navigateToSelectedProperty = MutableLiveData<DomainMars?>()
 
@@ -47,7 +52,16 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
 
     private fun refreshMarsList(filter: MarsApiFilter){
         viewModelScope.launch {
-            marsRepository.refreshMarsProperty(filter)
+            _status.value = MarsApiStatus.LOADING
+            try{
+                marsRepository.refreshMarsProperty(filter)
+                _status.value = MarsApiStatus.DONE
+
+            }catch (e: Exception) {
+                _status.value = MarsApiStatus.ERROR
+
+            }
+
         }
     }
     fun updateFilter(filter: MarsApiFilter) {

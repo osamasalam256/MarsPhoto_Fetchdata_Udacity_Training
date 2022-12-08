@@ -1,9 +1,11 @@
 package com.example.android.marsphotos.network
 
+import android.os.Parcelable
 import com.example.android.marsphotos.database.DatabaseMars
 import com.example.android.marsphotos.domain.DomainMars
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 
 /**
@@ -14,15 +16,15 @@ import com.squareup.moshi.JsonClass
 data class MarsPropertyContainer(val marsProperties: List<NetworkMarsProperty>)
 
 
-@JsonClass(generateAdapter = true)
+@Parcelize
 data class NetworkMarsProperty(
     val id: String,
     @Json(name = "img_src") val imgSrcUrl: String,
     val type: String,
-    val price: Double)
+    val price: Double): Parcelable
 
-fun MarsPropertyContainer.asDomainModel(): List<DomainMars>{
-    return marsProperties.map {
+fun List<NetworkMarsProperty>.asDomainModel(): List<DomainMars>{
+    return map {
         DomainMars(
             id = it.id,
             imgSrcUrl = it.imgSrcUrl,
@@ -33,8 +35,8 @@ fun MarsPropertyContainer.asDomainModel(): List<DomainMars>{
     }
 }
 
-fun MarsPropertyContainer.asDataBaseModel(): List<DatabaseMars>{
-    return marsProperties.map{
+fun List<NetworkMarsProperty>.asDataBaseModel(): List<DatabaseMars>{
+    return map{
         DatabaseMars(
             id = it.id,
             imgSrcUrl = it.imgSrcUrl,
