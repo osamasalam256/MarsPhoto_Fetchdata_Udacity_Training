@@ -17,12 +17,11 @@
 package com.example.android.marsphotos.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 
 import com.example.android.marsphotos.databinding.FragmentDetailBinding
 
@@ -30,6 +29,7 @@ import com.example.android.marsphotos.databinding.FragmentDetailBinding
 /**
  * This [Fragment] will show the detailed information about a selected piece of Mars real estate.
  */
+@Suppress("DEPRECATION")
 class DetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -44,6 +44,9 @@ class DetailFragment : Fragment() {
         binding.viewModel = ViewModelProvider(
             this, viewModelFactory).get(DetailViewModel::class.java)
         binding.lifecycleOwner = this
+
         return binding.root
     }
+
+
 }

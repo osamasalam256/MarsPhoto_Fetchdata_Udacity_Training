@@ -38,8 +38,7 @@ class OverviewFragment : Fragment() {
         val activity =requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProvider(this, Factory(activity.application))
-            .get(OverviewViewModel::class.java)
+        ViewModelProvider(this, Factory(activity.application))[OverviewViewModel::class.java]
     }
 
     /**

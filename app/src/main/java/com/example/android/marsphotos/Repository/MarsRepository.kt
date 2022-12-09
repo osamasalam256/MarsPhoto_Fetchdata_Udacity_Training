@@ -21,7 +21,7 @@ class MarsRepository(private val database: MarsDatabase) {
 
 
 
-    suspend fun refreshMarsProperty(filter: MarsApiFilter){
+   suspend fun refreshMarsProperty(filter: MarsApiFilter){
         withContext(Dispatchers.IO){
             val marsPropertyList = MarsApi.retrofitService.getProperty(filter.value)
             if (filter.value != "all"){
